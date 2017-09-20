@@ -1,8 +1,8 @@
 #!/usr/bin/python
 '''
 Parse fail2ban log for IP addresses
-
 Usage: $ ./ipban.py
+Special thanks to github.com/classmember for the ip regex
 '''
 import re
 import sys
