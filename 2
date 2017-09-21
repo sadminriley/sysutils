@@ -1,6 +1,9 @@
 #!/usr/bin/python
-from smtplib import SMTP
+import os
+import smtplib
+import subprocess
 from paramiko import SSHClient, AutoAddPolicy
+
 
 class SSH(object):
     '''
@@ -49,3 +52,7 @@ def send_email(username, password):
     subject = raw_input('Please enter the subject of your email-:\n')
     msg = raw_input('Please enter the message you would like to send-:\n')
     sendmail(from_addr, to_addr, subject, msg)
+    else:
+        print('You must enter a username followed by' +
+              'a password to use this function')
+
