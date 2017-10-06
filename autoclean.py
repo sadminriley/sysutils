@@ -13,7 +13,8 @@ __url__ = 'http://github.com/sadminriley'
 A script to scrape the puppetdash for unresponsive nodes,
 and remove them from puppet and salt.
 
-This script is meant to be ran on the puppetdash server
+This script is meant to be ran on the puppetmaster server.
+Enter your puppet url in the dash_url field below.
 '''
 dash_url = 'http://puppetdash.example.com/nodes/unresponsive'
 
@@ -43,23 +44,20 @@ def connect():
     Gets output from get_nodes function,
     and runs a a puppet cert clean and removes them from the salt-keys.
     '''
-    unrespsonsive_nodes = get_nodes()
-    for node in unrespsonsive_nodes:
-        salt_remove = 'salt-key -d %s -y' % node
-        commands = 'puppet cert clean %s' % node
+    for node in get_nodes():
+        salt_remove = 'sudo salt-key -d %s -y' % node
+        puppet_deactivate = 'sudo puppet node deactivate %s' % node
         try:
-            print('\nRemoving %s salt-key from salt-master' +
-                  'this may take a minute...' % node)
-            time.sleep(8)
             os.system(salt_remove)
-            print('\nRemoving %s puppet cert ' +
-                  'this may take a minute...' % node)
-            time.sleep(8)
-            os.system(commands)
-        except OSError as e:
+            time.sleep(4)
+            os.system(puppet_deactivate)
+        except OSError:
             print('\n!!! Error! Could not run pupper cert clean %s' % node)
         else:
             print('\nDone!\n The following nodes' +
                   'have been removed-: %s' % (unrespsonsive_nodes))
+        finally:
+            puppet_run = "sudo puppet agent -t"
+            os.system(puppet_run)
 
 connect()
