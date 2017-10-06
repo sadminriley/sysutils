@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from argparse import ArgumentParser
 from smtplib import SMTP
 from paramiko import SSHClient, AutoAddPolicy
 
@@ -49,3 +50,14 @@ def send_email(username, password):
     subject = raw_input('Please enter the subject of your email-:\n')
     msg = raw_input('Please enter the message you would like to send-:\n')
     sendmail(from_addr, to_addr, subject, msg)
+
+def main():
+    '''
+    Arguments
+    '''
+    parser = ArgumentParser()
+    parser.add_argument('-e',
+                        help='Execute a remote command on a server',
+                        dest='execute'
+                        )
+
