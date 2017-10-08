@@ -9,14 +9,11 @@ def main(string, dir):
     using user inputted search string and search directory
     '''
     output = []
-    for item in os.walk(dir):
-        output.append(item)
-        for item in output:
-            if string in output:
-                for item in string:
-                    print('Found %s' % item )
-            else:
-                print('Nothing found!')
+    for root, dirs, files in os.walk(dir):
+        if string in os.path.join(root,string):
+            output.append(os.path.join(root,string))
+    for item in output:
+        print item
 
 
 if __name__ == '__main__':
